@@ -9,8 +9,8 @@ function init() {
 
   $('.names').on('dblclick', 'li', deleteName);
   $('.names').on('click', '.edit', editName);
-  // $('.names').on('click', '.save', saveEdit);
   
+  $('.save').on('click', saveEdit);
   $('.cancel').on('click', cancelEdit);
 }
 
@@ -19,6 +19,22 @@ function cancelEdit() {
   $('.editName').val('');
 }
 
+// make saveEdit function
+//  - retrieve index from data
+//  - update storage
+
+function saveEdit() {
+  var index = $('.editArea').data('editIndex');
+  var newName = $('.editName').val();
+
+  var names = getNames();
+
+  names[index] = newName;
+
+  writeNames(names);
+  renderNames(names);
+  cancelEdit();
+}
 
 function editName() {
    // show the editArea
@@ -34,6 +50,8 @@ function editName() {
 
 
 function deleteName(event) {
+  cancelEdit();
+
   var name = $(this).text();
   var index = $(this).index();
 
@@ -46,6 +64,8 @@ function deleteName(event) {
 }
 
 function addName() {
+  cancelEdit();
+  
   var $input = $('.newName');
 
   var name = $input.val();
